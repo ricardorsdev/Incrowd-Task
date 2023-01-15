@@ -37,7 +37,7 @@ class FixtureDetailsFragment : Fragment(R.layout.fixture_details_fragment) {
         viewModel.fixtureDetails
             .flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
-                // TODO load view
+                    // TODO load view
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
 
