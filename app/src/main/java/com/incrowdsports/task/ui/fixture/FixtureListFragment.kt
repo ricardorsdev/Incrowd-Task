@@ -26,7 +26,7 @@ class FixtureListFragment : Fragment(R.layout.fixture_list_fragment) {
     private val binding by lazy { FixtureListFragmentBinding.bind(requireView()) }
     private val viewModel: FixtureListViewModel by viewModels {
         object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 val service: FixtureService = run {
                     val client = OkHttpClient.Builder().build()
                     val retrofit = Retrofit.Builder()
