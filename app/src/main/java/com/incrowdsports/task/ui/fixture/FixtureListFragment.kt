@@ -14,6 +14,7 @@ import com.incrowdsports.task.R
 import com.incrowdsports.task.data.FixtureService
 import com.incrowdsports.task.data.models.Fixture
 import com.incrowdsports.task.databinding.FixtureListFragmentBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import okhttp3.HttpUrl
@@ -21,25 +22,12 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
+@AndroidEntryPoint
 class FixtureListFragment : Fragment(R.layout.fixture_list_fragment) {
 
     private val binding by lazy { FixtureListFragmentBinding.bind(requireView()) }
-    private val viewModel: FixtureListViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                val service: FixtureService = run {
-                    val client = OkHttpClient.Builder().build()
-                    val retrofit = Retrofit.Builder()
-                        .client(client)
-                        .baseUrl(HttpUrl.get("https://feeds.incrowdsports.com/provider/opta/football/v1/"))
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build()
-                    retrofit.create(FixtureService::class.java)
-                }
-                return FixtureListViewModel(service = service) as T
-            }
-        }
-    }
+    private val viewModel: FixtureListViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

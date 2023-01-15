@@ -4,5 +4,9 @@ import com.incrowdsports.task.data.models.Fixture
 import kotlinx.coroutines.flow.Flow
 
 interface FixtureRepository {
-    fun getFixtureList(): Flow<List<Fixture>>
+    fun getFixtureList(
+        compId: Int,
+        season: Int,
+        size: Int,
+    ): Flow<List<Fixture>>
 }
