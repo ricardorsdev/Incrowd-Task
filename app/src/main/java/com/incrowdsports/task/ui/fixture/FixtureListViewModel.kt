@@ -22,6 +22,9 @@ class FixtureListViewModel @Inject constructor(
     private var _fixtureList = MutableStateFlow<List<Fixture>>(emptyList())
     val fixtureList: StateFlow<List<Fixture>> = _fixtureList
 
+    private var _fixtureDetails = MutableStateFlow<Fixture?>(null)
+    val fixtureDetails: StateFlow<Fixture?> = _fixtureDetails
+
     private var pageNumber = 0
 
     fun loadData() {
@@ -62,7 +65,26 @@ class FixtureListViewModel @Inject constructor(
     }
 
     fun getFixtureDetails(feedMatchId: Long) {
-
+        viewModelScope.launch(Dispatchers.Main) {
+            repository.getFixtureDetails(feedMatchId).catch {
+                it.printStackTrace()
+            }.collect { response ->
+                when (response) {
+                    is ServiceResult.Success -> {
+                        response.data?.let {
+                            _fixtureDetails.value = it
+                        }
+                    }
+                    is ServiceResult.Loading -> {
+                        // TODO Implement Loading UI State
+                    }
+                    is ServiceResult.Failure -> {
+                        // TODO Implement Error UI State
+                        Exception(response.message).printStackTrace()
+                    }
+                }
+            }
+        }
     }
 
 }

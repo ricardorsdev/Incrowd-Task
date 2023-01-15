@@ -21,4 +21,16 @@ class FixtureRepositoryImpl @Inject constructor(private val dataSource: FixtureS
             emit(ServiceResult.Failure(it.message))
         }
     }
+
+    override fun getFixtureDetails(
+        id: Long
+    ): Flow<ServiceResult<Fixture>> {
+        return flow {
+            emit(ServiceResult.Loading())
+            val response = dataSource.getFixtureDetails(id).data
+            emit(ServiceResult.Success(response))
+        }.catch {
+            emit(ServiceResult.Failure(it.message))
+        }
+    }
 }

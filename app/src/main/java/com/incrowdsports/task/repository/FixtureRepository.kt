@@ -8,4 +8,8 @@ interface FixtureRepository {
     fun getFixtureList(
         compId: Int, season: Int, size: Int, pageNumber: Int
     ): Flow<ServiceResult<List<Fixture>>>
+
+    fun getFixtureDetails(
+        id: Long
+    ): Flow<ServiceResult<Fixture>>
 }

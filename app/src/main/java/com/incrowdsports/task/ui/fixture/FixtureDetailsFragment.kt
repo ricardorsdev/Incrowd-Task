@@ -3,11 +3,16 @@ package com.incrowdsports.task.ui.fixture
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.incrowdsports.task.R
 import com.incrowdsports.task.databinding.FixtureDetailsFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 
 @AndroidEntryPoint
@@ -28,6 +33,14 @@ class FixtureDetailsFragment : Fragment(R.layout.fixture_details_fragment) {
         feedMatchId?.let {
             viewModel.getFixtureDetails(it)
         }
+
+        viewModel.fixtureDetails
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach {
+                // TODO load view
+            }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+
     }
 
     companion object {
