@@ -7,6 +7,7 @@ import com.incrowdsports.task.repository.FixtureRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,10 +20,11 @@ class FixtureListViewModel @Inject constructor(
 
     fun loadData(compId: Int, season: Int) {
         viewModelScope.launch(Dispatchers.Main) {
-            val data =
-                repository.getFixtureList(compId = compId, season = season, size = 10).collect {
-
-                }
+            repository.getFixtureList(compId = compId, season = season, size = 10).catch {
+                it.printStackTrace()
+            }.collect {
+                
+            }
         }
     }
 
