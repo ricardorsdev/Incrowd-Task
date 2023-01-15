@@ -12,6 +12,6 @@ interface FixtureService {
         @Query("compId") compId: Int,
         @Query("season") season: Int,
         @Query("size") size: Int,
-    ): NetworkResponse<List<Fixture>>
+    ): List<Fixture>
 
 }

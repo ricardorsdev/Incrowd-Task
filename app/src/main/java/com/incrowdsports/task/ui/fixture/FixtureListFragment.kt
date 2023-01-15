@@ -6,21 +6,14 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.incrowdsports.task.R
-import com.incrowdsports.task.data.FixtureService
 import com.incrowdsports.task.data.models.Fixture
 import com.incrowdsports.task.databinding.FixtureListFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import okhttp3.HttpUrl
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 @AndroidEntryPoint
@@ -44,7 +37,9 @@ class FixtureListFragment : Fragment(R.layout.fixture_list_fragment) {
 
         viewModel.fixtureList
             .flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach { renderFixtureList(fixtureList = it, adapter = adapter) }
+            .onEach {
+                renderFixtureList(fixtureList = it, adapter = adapter)
+            }
             .launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.loadData(compId = compId, season = season)
