@@ -2,10 +2,8 @@ package com.incrowdsports.task.ui.fixture
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.incrowdsports.task.R
@@ -20,7 +18,7 @@ import kotlinx.coroutines.flow.onEach
 class FixtureListFragment : Fragment(R.layout.fixture_list_fragment) {
 
     private val binding by lazy { FixtureListFragmentBinding.bind(requireView()) }
-    private val viewModel: FixtureListViewModel by viewModels()
+    private val viewModel: FixtureListViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,12 +47,18 @@ class FixtureListFragment : Fragment(R.layout.fixture_list_fragment) {
             FixtureListAdapter.FixtureItem(
                 fixture = it,
                 onClick = {
-                    Toast.makeText(context, "TODO: Navigate to ${it.feedMatchId}", LENGTH_SHORT)
-                        .show()
+                    goToFixtureDetails(it.feedMatchId)
                 },
             )
         }
         adapter.submitList(itemList)
+    }
+
+    private fun goToFixtureDetails(feedMatchId: Long) {
+        val fragmentManager = this.parentFragmentManager
+        val fragment = FixtureDetailsFragment.newInstance(feedMatchId)
+        fragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainerView, fragment).commit()
     }
 
     companion object {

@@ -61,4 +61,8 @@ class FixtureListViewModel @Inject constructor(
         }
     }
 
+    fun getFixtureDetails(feedMatchId: Long) {
+
+    }
+
 }
