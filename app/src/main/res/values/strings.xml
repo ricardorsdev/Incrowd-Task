@@ -3,4 +3,6 @@
     <string name="competition_label">Competition:</string>
     <string name="season_label">Season:</string>
     <string name="date_label">Date:</string>
+    <string name="goals_label">Goals:</string>
+    <string name="shirt_label">Shirt:</string>
 </resources>
