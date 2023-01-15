@@ -25,11 +25,9 @@ class FixtureListFragment : Fragment(R.layout.fixture_list_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val compId = 8
-        val season = 2021
-
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.loadData(compId = compId, season = season)
+            binding.swipeRefreshLayout.isRefreshing = true
+            viewModel.loadData()
         }
 
         val adapter = FixtureListAdapter()
@@ -42,7 +40,7 @@ class FixtureListFragment : Fragment(R.layout.fixture_list_fragment) {
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
 
-        viewModel.loadData(compId = compId, season = season)
+        viewModel.loadData()
     }
 
     private fun renderFixtureList(fixtureList: List<Fixture>, adapter: FixtureListAdapter) {
@@ -51,7 +49,8 @@ class FixtureListFragment : Fragment(R.layout.fixture_list_fragment) {
             FixtureListAdapter.FixtureItem(
                 fixture = it,
                 onClick = {
-                    Toast.makeText(context, "TODO: Navigate to ${it.feedMatchId}", LENGTH_SHORT).show()
+                    Toast.makeText(context, "TODO: Navigate to ${it.feedMatchId}", LENGTH_SHORT)
+                        .show()
                 },
             )
         }

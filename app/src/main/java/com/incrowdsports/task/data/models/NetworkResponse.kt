@@ -1,7 +1,14 @@
 package com.incrowdsports.task.data.models
 
-sealed class NetworkResponse<T> {
-    data class Loading<T>(val isLoading: Boolean) : NetworkResponse<T>()
-    data class Success<T>(val data: T) : NetworkResponse<T>()
-    data class Failure<T>(val errorMessage: String?) : NetworkResponse<T>()
+data class NetworkResponse<T>(
+    val data: T,
+)
+
+sealed class ServiceResult<T>(
+    val data: T? = null,
+    val message: String? = null
+) {
+    class Loading<T> : ServiceResult<T>()
+    class Success<T>(data: T) : ServiceResult<T>(data = data)
+    class Failure<T>(errorMessage: String?) : ServiceResult<T>(message = errorMessage)
 }

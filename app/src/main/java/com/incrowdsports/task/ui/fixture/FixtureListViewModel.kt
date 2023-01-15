@@ -3,7 +3,7 @@ package com.incrowdsports.task.ui.fixture
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.incrowdsports.task.data.models.Fixture
-import com.incrowdsports.task.data.models.NetworkResponse
+import com.incrowdsports.task.data.models.ServiceResult
 import com.incrowdsports.task.repository.FixtureRepository
 import com.incrowdsports.task.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,23 +22,42 @@ class FixtureListViewModel @Inject constructor(
     private var _fixtureList = MutableStateFlow<List<Fixture>>(emptyList())
     val fixtureList: StateFlow<List<Fixture>> = _fixtureList
 
-    fun loadData(compId: Int = Constants.COMP_ID, season: Int = Constants.SEASON) {
+    private var pageNumber = 0
+
+    fun loadData() {
+        updatePageNumber()
         viewModelScope.launch(Dispatchers.Main) {
-            repository.getFixtureList(compId = compId, season = season, size = 10).catch {
+            repository.getFixtureList(
+                compId = Constants.COMP_ID,
+                season = Constants.SEASON,
+                size = Constants.PAGE_SIZE,
+                pageNumber = pageNumber
+            ).catch {
                 it.printStackTrace()
             }.collect { response ->
                 when (response) {
-                    is NetworkResponse.Success -> {
-                        _fixtureList.value = response.data
+                    is ServiceResult.Success -> {
+                        response.data?.let {
+                            _fixtureList.value = it
+                        }
                     }
-                    is NetworkResponse.Loading -> {
+                    is ServiceResult.Loading -> {
                         // TODO Implement Loading UI State
                     }
-                    is NetworkResponse.Failure -> {
+                    is ServiceResult.Failure -> {
                         // TODO Implement Error UI State
+                        Exception(response.message).printStackTrace()
                     }
                 }
             }
+        }
+    }
+
+    private fun updatePageNumber() {
+        if (_fixtureList.value.isNotEmpty()) {
+            pageNumber++
+        } else {
+            pageNumber = 0
         }
     }
 
