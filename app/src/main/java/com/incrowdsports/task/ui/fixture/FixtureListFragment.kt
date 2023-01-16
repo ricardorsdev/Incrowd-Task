@@ -3,7 +3,9 @@ package com.incrowdsports.task.ui.fixture
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.incrowdsports.task.R
@@ -32,12 +34,16 @@ class FixtureListFragment : Fragment(R.layout.fixture_list_fragment) {
         binding.recyclerView.adapter = adapter
 
         viewModel.fixtureList
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 renderFixtureList(fixtureList = it, adapter = adapter)
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
+        
+    }
 
+    override fun onResume() {
+        super.onResume()
         viewModel.loadData()
     }
 
@@ -58,7 +64,10 @@ class FixtureListFragment : Fragment(R.layout.fixture_list_fragment) {
         val fragmentManager = this.parentFragmentManager
         val fragment = FixtureDetailsFragment.newInstance(feedMatchId)
         fragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerView, fragment).commit()
+            .replace(R.id.fragmentContainerView, fragment)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            .addToBackStack(null)
+            .commit()
     }
 
     companion object {

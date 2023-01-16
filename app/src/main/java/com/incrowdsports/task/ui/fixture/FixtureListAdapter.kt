@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.incrowdsports.task.data.models.Fixture
 import com.incrowdsports.task.databinding.FixtureLayoutBinding
+import com.incrowdsports.task.utils.DateUtils
+import java.util.Date
 
 class FixtureListAdapter : ListAdapter<FixtureListAdapter.FixtureItem, RecyclerView.ViewHolder>(diffCallback) {
 
@@ -21,14 +23,17 @@ class FixtureListAdapter : ListAdapter<FixtureListAdapter.FixtureItem, RecyclerV
     private class FixtureViewHolder(private val binding: FixtureLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: FixtureItem) {
-            binding.root.setOnClickListener { item.onClick.invoke() }
-            binding.competition.text = item.fixture.competition
-            binding.period.text = item.fixture.period
-            binding.venue.text = item.fixture.venue.name
-            binding.homeName.text = item.fixture.homeTeam.name
-            binding.homeScore.text = item.fixture.homeTeam.score
-            binding.awayName.text = item.fixture.awayTeam.name
-            binding.awayScore.text = item.fixture.awayTeam.score
+            binding.apply {
+                root.setOnClickListener { item.onClick.invoke() }
+                competition.text = item.fixture.competition
+                period.text = item.fixture.period
+                venue.text = item.fixture.venue.name
+                homeName.text = item.fixture.homeTeam.name
+                homeScore.text = item.fixture.homeTeam.score
+                awayName.text = item.fixture.awayTeam.name
+                awayScore.text = item.fixture.awayTeam.score
+                dateTime.text = DateUtils.changeStringDateFormat(item.fixture.date)
+            }
         }
 
         companion object {
