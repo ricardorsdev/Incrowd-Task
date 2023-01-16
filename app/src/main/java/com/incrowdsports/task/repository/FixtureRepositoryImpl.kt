@@ -14,7 +14,7 @@ class FixtureRepositoryImpl @Inject constructor(private val dataSource: FixtureS
         compId: Int, season: Int, size: Int, pageNumber: Int
     ): Flow<ServiceResult<List<Fixture>>> {
         return flow {
-            emit(ServiceResult.Loading())
+            emit(ServiceResult.Loading)
             val response = dataSource.getFixtureList(compId, season, size, pageNumber).data
             emit(ServiceResult.Success(response))
         }.catch {
@@ -26,7 +26,7 @@ class FixtureRepositoryImpl @Inject constructor(private val dataSource: FixtureS
         id: Long
     ): Flow<ServiceResult<Fixture>> {
         return flow {
-            emit(ServiceResult.Loading())
+            emit(ServiceResult.Loading)
             val response = dataSource.getFixtureDetails(id).data
             emit(ServiceResult.Success(response))
         }.catch {

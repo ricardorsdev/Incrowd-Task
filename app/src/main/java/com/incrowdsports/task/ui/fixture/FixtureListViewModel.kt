@@ -40,9 +40,7 @@ class FixtureListViewModel @Inject constructor(
             }.collect { response ->
                 when (response) {
                     is ServiceResult.Success -> {
-                        response.data?.let {
-                            _fixtureList.value = it
-                        }
+                        _fixtureList.value = response.data
                     }
                     is ServiceResult.Loading -> {
                         // TODO Implement Loading UI State
